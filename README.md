@@ -1,3 +1,4 @@
 # Nginx-log-parser
 
-Simple programm to parse nginx logs from .gz file, converting parsed data into html page 
+Simple programme to parse nginx logs.
+Converts parsed data into html page. 
