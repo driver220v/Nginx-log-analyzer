@@ -4,9 +4,8 @@ import logging
 import gzip
 import os
 from time import time
+import shutil
 import concurrent.futures
-
-start = time()
 
 
 # Estimate time of program execution
@@ -145,7 +144,7 @@ def build_report(url_vals, log_path):
     os.makedirs(os.path.dirname(log_path), exist_ok=True)  # create intermediate directories
     with open(report_path, "w") as rf:
         rf.write(report_text)
-all()
+
 
 def write_to_file(logs):
     if os.path.isfile('logs_result_threaded_new.txt'):
@@ -176,13 +175,17 @@ def concurrent_execute(path_lst):
             write_to_file(f.result())
 
 
-result_log_analyzer = []
-path = [r'nginx-access-ui.log.gz', r'nginx-access-ui.log-2.gz', r'nginx-access-ui.log-3.gz']
-report_path = r'/home/driver220/log_reports/report_ver2.html'
-concurrent_execute(path)
+path_lst = []
+for i in range(10):
+    path_lst.append(f'nginx-access-ui.log{i}.gz')
+    shutil.copyfile('nginx-access-ui.log.gz', f'nginx-access-ui.log{i}.gz')
+
+concurrent_execute(path_lst)
+
+
+# path = [r'nginx-access-ui.log.gz', r'nginx-access-ui.log-2.gz', r'nginx-access-ui.log-3.gz']
+# report_path = r'/home/driver220/log_reports/report_ver2.html'
+# concurrent_execute(path)
 # url_vals = log_analyzer(path)
 # print(url_vals)
 # build_report(url_vals, report_path)
-end = time()
-
-print(end - start)
